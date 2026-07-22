@@ -7,6 +7,7 @@ export default function my(){
     const inputRef = useRef<HTMLInputElement>(null);
     const [file, setFile] = useState<File | null>(null);
     const [dragging, setIsDragging] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     function browse(){
         inputRef.current?.click()
@@ -72,6 +73,27 @@ export default function my(){
         processFile(file)
     }
 
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>){
+        e.preventDefault();
+
+        if(!file) return;
+
+        const formData = new FormData();
+        formData.append("file", file)
+
+        const res = await fetch('/api/upload', {
+            method: "POST",
+            body: formData
+        })
+
+        setLoading(true)
+
+        const data = await res.json();
+        console.log(data)
+        setLoading(false)
+        inputRef.current!.value = "";
+    }
+
 
     return (
         <div className="min-h-screen w-full bg-[#0a0a0b] text-white font-sans antialiased flex flex-col">
@@ -98,10 +120,16 @@ export default function my(){
                 History
                 </nav>
             </header>
+            {loading && (
+                <div className="absolute inset-0 z-10 bg-black/50 backdrop-blur-sm flex items-center justify-center">
+                    <div className="h-12 w-12 rounded-full border-4 border-white/20 border-t-white animate-spin"></div>
+                </div>
+            )}
+
             <main className="flex-1 flex items-center justify-center px-6 pb-24">
                 
 
-                <form method="post" action="/" className="w-full max-w-[560px]">
+                <form onSubmit={handleSubmit} className="w-full max-w-[560px]">
                     <div onDragOver={handleDragOver} onDrop={handleDrop} onDragEnter={handleDragEnter} onDragLeave={handleDrageLeave} className={[
                     "relative rounded-2xl bg-[#111113] transition-all duration-200",
                     "flex flex-col items-center justify-center text-center",
@@ -111,7 +139,7 @@ export default function my(){
                         {file ?<p className="text-2xl font-mono">{file.name}</p>:<p className="text-2xl font-mono">Drop your files here.</p>}
                         
                         <br />
-                        <input accept=".csv,.xls,.xlsx,text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ref={inputRef} hidden type="file" className="h-10 w-40 border-2 rounded-lg" onChange={handleFileChange} />
+                        <input name="file" accept=".csv,.xls,.xlsx,text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ref={inputRef} hidden type="file" className="h-10 w-40 border-2 rounded-lg" onChange={handleFileChange} />
                         {file?<p className="text-sm text-gray-500">{fileSizeHandler(file?.size)} </p>:<p className="text-sm text-gray-500">Or <button type="button" className="text-gray-300 underline decoration-gray-500 decoration-wavy underline-offset-2 cursor-pointer" onClick={browse}>Click Me</button> </p>
                         }
                         {file?<button className="w-full py-2 rounded-lg text-black mt-5 bg-white">Submit</button>:null}
