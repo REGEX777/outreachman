@@ -91,6 +91,7 @@ export default function my(){
         const data = await res.json();
         console.log(data)
         setLoading(false)
+        setFile(null)
         inputRef.current!.value = "";
     }
 
