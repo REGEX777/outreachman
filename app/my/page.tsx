@@ -1,6 +1,7 @@
 "use client"
 
 import { useRef, useState } from "react"
+import Nav from "./components/Nav";
 
 
 export default function my(){
@@ -98,29 +99,7 @@ export default function my(){
 
     return (
         <div className="min-h-screen w-full bg-[#0a0a0b] text-white font-sans antialiased flex flex-col">
-            <header className="flex items-center justify-between px-8 py-6">
-                <div className="flex items-center gap-2">
-                <span className="text-[15px] font-medium tracking-tight text-white">
-                    Sheetload
-                </span>
-                <svg
-                    width="9"
-                    height="9"
-                    viewBox="0 0 9 9"
-                    className="text-white/40"
-                    fill="none"
-                >
-                    <path
-                    d="M4.5 0L9 4.5L4.5 9L0 4.5L4.5 0Z"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                    />
-                </svg>
-                </div>
-                <nav className="text-[13px] text-white/40 hover:text-white/70 transition-colors cursor-pointer">
-                History
-                </nav>
-            </header>
+            <Nav />
             {loading && (
                 <div className="absolute inset-0 z-10 bg-black/50 backdrop-blur-sm flex items-center justify-center">
                     <div className="h-12 w-12 rounded-full border-4 border-white/20 border-t-white animate-spin"></div>
