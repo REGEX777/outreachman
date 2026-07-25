@@ -17,7 +17,7 @@ datasource db {
 model Upload {
   id String @id @default(cuid())
   fileName String 
-  headers Json
+  headers String[]
   totalRows Int
   currentRow Int @default(0)
   createdAt   DateTime     @default(now())

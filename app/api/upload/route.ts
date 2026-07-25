@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server';
 import {prisma} from '../../../lib/prisma'
 import * as XLSX from "xlsx";
 export async function POST(req: Request) {
@@ -27,6 +28,15 @@ export async function POST(req: Request) {
 
     const headers = Object.keys(rows[0]);
 
+    if (!headers.includes("Email")) {
+        console.log("No Email Column")
+        return NextResponse.json(
+            {
+                error: 'The uploaded file must contain an "Email" column.',
+            },
+            { status: 400 }
+        );
+    }
 
     const upload = await prisma.upload.create({data: {
         fileName: file.name,
