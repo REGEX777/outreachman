@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function Nav(){
     return(
             <header className="flex items-center justify-between px-8 py-6">
@@ -19,8 +21,9 @@ export default function Nav(){
                     />
                 </svg>
                 </div>
-                <nav className="text-[13px] text-white/40 hover:text-white/70 transition-colors cursor-pointer">
-                History
+                <nav className="flex flex-row items-center justify-center gap-2">
+                <Link className="text-[13px] text-white/40 hover:text-white/70 transition-colors cursor-pointer" href='/my/history'>History</Link>
+                <Link className="text-[13px] text-white/40 hover:text-white/70 transition-colors cursor-pointer" href='/my'>Upload</Link>
                 </nav>
             </header>
     )

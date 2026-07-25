@@ -39,7 +39,7 @@ export default function HistoryCard({upload}: props) {
                     Start Campaign
                 </button>
 
-                <DeleteButton id={upload.id} />
+                <DeleteButton id={upload.id} fileName={upload.fileName} />
 
             </div>
         </div>

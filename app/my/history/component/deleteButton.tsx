@@ -4,16 +4,28 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { Delete02Icon } from '@hugeicons/core-free-icons'
 import { useState } from 'react'
 import ConfirmationModal from './confirmationModal'
+import { prisma } from '@/lib/prisma'
+import { deleteUpload } from '../actions'
+import { Upload } from '@prisma/client'
 
 
 type props = {
-    id: string
+    id: string,
+    fileName: string
 }
 
 
-export default function DeleteButton({id}: props){
+export default function DeleteButton({id, fileName}: props){
 
     const [open, setOpen] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false)
+
+    async function handleDelete(){
+        setIsDeleting(true)
+        await deleteUpload(id)
+        setIsDeleting(false)
+        return setOpen(false)
+    }
 
     return (
         <>
@@ -21,7 +33,7 @@ export default function DeleteButton({id}: props){
                 <HugeiconsIcon icon={Delete02Icon} size={20} strokeWidth={2} className="text-red-200" />
             </button>
 
-            {open && (<ConfirmationModal />)}
+            {open && (<ConfirmationModal onCancel={()=>{setOpen(false)}} onConfirm={handleDelete} isDeleting={isDeleting} fileName={fileName} />)}
         </>
     )
 }
