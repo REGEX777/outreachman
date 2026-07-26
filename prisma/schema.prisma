@@ -22,6 +22,10 @@ model Upload {
   currentRow Int @default(0)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  emailColumn String?
+  nameColumn   String?
+  configured Boolean? @default(false)
+
 
   rows        UploadRow[]
 }
@@ -40,7 +44,7 @@ model UploadRow {
 
   rowIndex Int
 
-  recipientEmail  String
+  recipientEmail  String?
 
   data            Json
   status          EmailStatus @default(PENDING)

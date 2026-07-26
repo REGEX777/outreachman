@@ -4,8 +4,6 @@ import * as XLSX from "xlsx";
 export async function POST(req: Request) {
     const formData = await req.formData();
 
-    console.log(formData)
-
     const file = formData.get('file') as File;
 
     if(!file){
@@ -14,8 +12,6 @@ export async function POST(req: Request) {
             { status: 400 }
         );
     }
-
-    console.log(file)
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
@@ -27,17 +23,7 @@ export async function POST(req: Request) {
     const rows = XLSX.utils.sheet_to_json<Record<string, any>>(sheet);
 
     const headers = Object.keys(rows[0]);
-
-    if (!headers.includes("Email")) {
-        console.log("No Email Column")
-        return NextResponse.json(
-            {
-                error: 'The uploaded file must contain an "Email" column.',
-            },
-            { status: 400 }
-        );
-    }
-
+    
     const upload = await prisma.upload.create({data: {
         fileName: file.name,
         headers,
@@ -48,14 +34,15 @@ export async function POST(req: Request) {
         data: rows.map((row, index)=>({
             uploadId: upload.id,
             rowIndex: index,
-            recipientEmail: row.Email,
+            recipientEmail: null,
             data: row
         }))
     })
 
     return Response.json({
         success: true,
-        uploadId: upload.id
+        uploadId: upload.id,
+        headers
     });
 
 }

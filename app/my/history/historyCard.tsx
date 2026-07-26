@@ -1,5 +1,6 @@
 import { Upload } from "@prisma/client"
 import { HugeiconsIcon } from '@hugeicons/react'
+import Link from "next/link";
 import { FileSpreadsheetIcon, Delete02Icon } from '@hugeicons/core-free-icons'
 import DropDownBtn from "./component/headerDropDownBtn";
 import DeleteButton from "./component/deleteButton";
@@ -17,7 +18,14 @@ export default function HistoryCard({upload}: props) {
                     <HugeiconsIcon icon={FileSpreadsheetIcon} size={18} className="text-emerald-400" />
                 </div>
                 <div className="flex flex-col items-start justify-center">
-                    <p className="text-[15px] font-medium tracking-tight">{upload.fileName}</p>
+                    <Link href={`/my/upload/${upload.id}`} className="text-[15px] font-medium tracking-tight flex flex-row items-center justify-center gap-2">
+                        {upload.fileName}
+                        {upload.configured ? null : 
+                            <div className="rounded-lg px-1.5 bg-red-500/40 border border-red-500/50">
+                                <p className="text-xs text-[#EEEE]">Needs Configuration</p>
+                            </div>
+                        }
+                    </Link>
                     <div className="flex flex-row items-center gap-2 mt-0.5">
                         <p className="text-xs text-white/40">
                             <span className="text-white/60 font-medium">{upload.currentRow}</span> / {upload.totalRows} rows
