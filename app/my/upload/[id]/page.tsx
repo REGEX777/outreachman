@@ -3,8 +3,6 @@ import Nav from "../../components/Nav";
 import { notFound } from "next/navigation";
 import { HugeiconsIcon } from '@hugeicons/react'
 import { FileSpreadsheetIcon } from '@hugeicons/core-free-icons'
-import ConfirmationModal from "../../history/component/confirmationModal";
-import { useState } from "react";
 import ConfigureModal from "../../components/ConfigureModal";
 
 type Props = {
@@ -14,7 +12,6 @@ type Props = {
 }
 
 export default async function upload({params}: Props) {
-    
 
     const {id} = await params;
     const upload = await prisma.upload.findUnique({where: {id}, include: {rows: true}})
@@ -22,10 +19,11 @@ export default async function upload({params}: Props) {
         //404
         notFound()
     }
+
     return(
         <div className="min-h-screen w-full bg-[#0a0a0b] text-white font-sans antialiased flex flex-col">
             <Nav />
-            {upload.configured?null:<ConfigureModal headers={upload.headers} uploadId={upload.id} onClose={() => setShowConfigModal(false)} />}
+            {upload.configured?null:<ConfigureModal headers={upload.headers} uploadId={upload.id} upload={upload} />}
             <main className="flex-1 flex flex-col items-center px-6 pb-24 gap-4">
                 {/* Meta card */}
                 <div className="w-full rounded-xl bg-[#111113] border border-white/[0.06] px-5 py-4 flex flex-row items-start justify-between">

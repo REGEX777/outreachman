@@ -2,18 +2,16 @@
 
 import { useRef, useState } from "react"
 import Nav from "./components/Nav";
-import ConfigureModal from "./components/ConfigureModal";
+import { useRouter } from "next/navigation";
 
 
 export default function my(){
+    const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);
     const [file, setFile] = useState<File | null>(null);
     const [dragging, setIsDragging] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const [showConfigModal, setShowConfigModal] = useState(false);
-    const [headers, setHeaders] = useState<string[]>([]);
-    const [uploadId, setUploadId] = useState("");
 
     function browse(){
         inputRef.current?.click()
@@ -84,6 +82,9 @@ export default function my(){
 
         if(!file) return;
 
+        setLoading(true)
+
+
         const formData = new FormData();
         formData.append("file", file)
 
@@ -92,15 +93,17 @@ export default function my(){
             body: formData
         })
 
-        setLoading(true)
 
         const data = await res.json();
         console.log(data)
         setLoading(false)
-        setUploadId(data.uploadId)
-        setHeaders(data.headers)
-        setShowConfigModal(true);
-        inputRef.current!.value = "";
+
+        if (!res.ok) {
+            alert(data.error);
+            return;
+        }
+
+        router.push(`/my/upload/${data.uploadId}`);
     }
 
 
@@ -111,10 +114,6 @@ export default function my(){
                 <div className="absolute inset-0 z-10 bg-black/50 backdrop-blur-sm flex items-center justify-center">
                     <div className="h-12 w-12 rounded-full border-4 border-white/20 border-t-white animate-spin"></div>
                 </div>
-            )}
-
-            {showConfigModal && (
-                <ConfigureModal headers={headers} uploadId={uploadId} onClose={() => setShowConfigModal(false)} />
             )}
 
             <main className="flex-1 flex items-center justify-center px-6 pb-24">

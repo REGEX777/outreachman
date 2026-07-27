@@ -27,7 +27,8 @@ export default function ConfirmationModal({ fileName, onConfirm, onCancel, isDel
                 <div className="flex flex-row items-center justify-end gap-2.5 mt-5">
                     <button
                         onClick={onCancel}
-                        className="bg-[#1C1C1E] hover:bg-[#242427] border border-white/[0.06] transition-colors duration-200 rounded-lg cursor-pointer py-1.5 px-3.5 text-sm text-white/80"
+                        disabled={isDeleting}
+                        className="bg-[#1C1C1E] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#242427] border border-white/[0.06] transition-colors duration-200 rounded-lg cursor-pointer py-1.5 px-3.5 text-sm text-white/80"
                     >
                         Cancel
                     </button>
