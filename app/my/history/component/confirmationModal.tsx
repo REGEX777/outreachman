@@ -17,13 +17,13 @@ export default function ConfirmationModal({ fileName, onConfirm, onCancel, isDel
                         <HugeiconsIcon icon={Delete02Icon} size={18} className="text-red-400" />
                     </div>
                     <div className="flex flex-col items-start pt-0.5">
-                        <p className="text-[15px] font-medium tracking-tight">Delete this upload?</p>
+                        <p className="text-[15px] font-medium tracking-tight">Cancel this upload?</p>
                         <p className="text-xs text-white/40 mt-1 leading-relaxed">
-                            This will permanently remove <span className="text-white/60">{fileName}</span> and its data. This can't be undone.
+                            Cancelling this upload will permanently remove <span className="text-white/60">{fileName}</span> and its data. This can't be undone.
                         </p>
                     </div>
                 </div>
-
+            
                 <div className="flex flex-row items-center justify-end gap-2.5 mt-5">
                     <button
                         onClick={onCancel}
