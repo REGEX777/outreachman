@@ -31,7 +31,9 @@ model Upload {
 }
 
 enum EmailStatus {
-  PENDING
+  DRAFT
+  QUEUED
+  SENDING
   SENT
   FAILED
 }
@@ -44,17 +46,26 @@ model UploadRow {
 
   rowIndex Int
 
-  recipientEmail  String?
+  recipientEmail String?
+  recipientName String?
 
-  data            Json
-  status          EmailStatus @default(PENDING)
-  sentAt          DateTime?
-  error           String?
+  data Json
 
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  subject String?
+  body String?
+
+  status EmailStatus @default(DRAFT)
+
+  messageId String?
+
+  sentAt DateTime?
+
+  error String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  retryCount Int @default(0)
 
   @@index([uploadId])
-  @@index([recipientEmail])
   @@index([status])
 }
