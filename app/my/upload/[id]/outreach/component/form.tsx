@@ -16,10 +16,26 @@ export default function Form({name, email, extraData, emailColumn, nameColumn}: 
     const [subject, setSubject] = useState("")
     const [body, setBody] = useState("")
 
-    function handleSubmit(){
+    async function handleSubmit(){
+        setSubmitting(true)
         try {
-            console.log("Subject:", subject);
-            console.log("Body:", body);  
+            const response = await fetch("/api/drafts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    // uploadRowId,
+                    subject,
+                    body,
+                }),
+            })
+
+            if (!response.ok) {
+                throw new Error("Failed to save draft");
+            }
+
+            // do stuff
         } catch (error) {
             console.log(error)
             alert('something went wrong')
