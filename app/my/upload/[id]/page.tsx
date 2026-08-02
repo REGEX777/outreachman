@@ -1,9 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import Nav from "../../components/Nav";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { HugeiconsIcon } from '@hugeicons/react'
 import { FileSpreadsheetIcon } from '@hugeicons/core-free-icons'
 import ConfigureModal from "../../components/ConfigureModal";
+import Link from "next/link";
 
 type Props = {
     params: Promise<{
@@ -18,6 +19,10 @@ export default async function upload({params}: Props) {
     if(!upload){
         //404
         notFound()
+    }
+
+    function startOutreach(){
+        return redirect(`/my/upload/${id}/outreach`)
     }
 
     return(
@@ -53,6 +58,20 @@ export default async function upload({params}: Props) {
                     </div>
 
                     <div className="flex flex-row items-center gap-6">
+
+                        <Link
+                            href={`/my/upload/${id}/outreach`}
+                            className={`
+                                rounded-lg py-1.5 px-3.5 text-sm font-medium transition-colors duration-200
+                                ${
+                                    upload.status === "DRAFT"
+                                        ? "bg-white text-black hover:bg-white/90"
+                                        : "bg-white/20 text-white/40 pointer-events-none cursor-not-allowed"
+                                }
+                            `}
+                        >
+                            {upload.currentRow > 0 ? "Continue" : "Start"} composing draft
+                        </Link>
                         <div className="flex flex-col items-end">
                             <p className="text-xs text-white/40">Rows</p>
                             <p className="text-sm font-medium mt-0.5">{upload.totalRows}</p>

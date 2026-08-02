@@ -1,9 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import { useRouter } from "next/router";
+
 
 export async function POST(req: Request) {
-    const router = useRouter()
     const body = await req.json()
 
     const row = await prisma.uploadRow.update({
@@ -15,11 +14,13 @@ export async function POST(req: Request) {
 
     const upload = await prisma.upload.findUnique({where: {id: row.uploadId}})
 
-    if(!upload) return notFound()
+    if(!upload){ 
+        console.log("hein kya, ye kya bak rahe ho")
+        return notFound()
+    }
 
-    if(row.rowIndex === upload.totalRows){
+    if(upload.currentRow >= upload.totalRows){
         await prisma.upload.update({where: {id: row.uploadId}, data: {status: 'READY'}})
-        return router.push(`/upload/${upload.id}`);
     }else{
         await prisma.upload.update({where: {id: row.uploadId}, data: {currentRow: {increment: 1}}})
     }

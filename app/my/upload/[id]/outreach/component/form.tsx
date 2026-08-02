@@ -21,10 +21,13 @@ export default function Form({name, email, extraData, emailColumn, nameColumn, u
     const [submitting, setSubmitting] = useState(false)
     const [subject, setSubject] = useState("")
     const [body, setBody] = useState("")
+    const [loading, setLoading] = useState(false);
+
 
     async function handleSubmit(){
         setSubmitting(true)
         try {
+            setLoading(true)
             const response = await fetch("/api/drafts", {
                 method: "POST",
                 headers: {
@@ -41,9 +44,10 @@ export default function Form({name, email, extraData, emailColumn, nameColumn, u
                 throw new Error("Failed to save draft");
             }
 
-            setSubject("")
-            setBody("")
+            // setSubject("")
+            // setBody("")
             router.refresh();
+            setLoading(false)
             // do stuff
         } catch (error) {
             console.log(error)
@@ -61,6 +65,11 @@ export default function Form({name, email, extraData, emailColumn, nameColumn, u
     );
     return (
             <main className="flex-1 flex flex-row gap-4 px-6 py-6">
+                {loading && (
+                    <div className="absolute inset-0 z-10 bg-black/50 backdrop-blur-sm flex items-center justify-center">
+                        <div className="h-12 w-12 rounded-full border-4 border-white/20 border-t-white animate-spin"></div>
+                    </div>
+                )}
                 {/* Left — compose panel */}
                 <div className="flex-1 flex flex-col gap-3">
                     <input
