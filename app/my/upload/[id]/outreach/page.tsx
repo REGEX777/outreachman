@@ -41,13 +41,11 @@ export default async function ContactViewer({params}: props) {
         ? data[upload.emailColumn]
         : null;
 
-    console.log(name)
-    console.log(email)
 
     return (
         <div className="min-h-screen w-full bg-[#0a0a0b] text-white font-sans antialiased flex flex-col">
             <Nav />
-            <Form name={name} email={email} extraData={data} emailColumn={upload.emailColumn} nameColumn={upload.nameColumn} uploadRowId={row.id} />
+            <Form name={name} email={email} extraData={data} emailColumn={upload.emailColumn} nameColumn={upload.nameColumn} uploadRowId={row.id} index={upload.currentRow} />
         </div>
     )
 }

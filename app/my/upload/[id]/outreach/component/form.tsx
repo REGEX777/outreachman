@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type props = {
     email: string,
@@ -8,10 +9,13 @@ type props = {
     extraData: Record<string, unknown>,
     uploadRowId: string,
     emailColumn: string | null,
-    nameColumn: string | null
+    nameColumn: string | null,
+    index: number
 }
 
-export default function Form({name, email, extraData, emailColumn, nameColumn, uploadRowId}: props) {
+export default function Form({name, email, extraData, emailColumn, nameColumn, uploadRowId, index}: props) {
+
+    const router = useRouter();
 
     const [submitting, setSubmitting] = useState(false)
     const [subject, setSubject] = useState("")
@@ -36,6 +40,9 @@ export default function Form({name, email, extraData, emailColumn, nameColumn, u
                 throw new Error("Failed to save draft");
             }
 
+            setSubject("")
+            setBody("")
+            router.refresh();
             // do stuff
         } catch (error) {
             console.log(error)
@@ -83,6 +90,10 @@ export default function Form({name, email, extraData, emailColumn, nameColumn, u
 
                 {/* Right — row data panel */}
                 <div className="w-80 flex flex-col gap-3">
+                    <div className="bg-[#111113] border border-white/[0.06] rounded-lg px-4 py-3">
+                        <p className="text-xs text-white/40 mb-1">Index</p>
+                        <p className="text-sm text-white/60">{index}</p>
+                    </div>
                     <div className="bg-[#111113] border border-white/[0.06] rounded-lg px-4 py-3">
                         <p className="text-xs text-white/40 mb-1">Email</p>
                         <p className="text-sm text-white/60">{email}</p>
