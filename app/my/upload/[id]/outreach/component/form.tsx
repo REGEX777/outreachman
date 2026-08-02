@@ -10,12 +10,13 @@ type props = {
     uploadRowId: string,
     emailColumn: string | null,
     nameColumn: string | null,
-    index: number
+    index: number,
 }
 
 export default function Form({name, email, extraData, emailColumn, nameColumn, uploadRowId, index}: props) {
 
     const router = useRouter();
+
 
     const [submitting, setSubmitting] = useState(false)
     const [subject, setSubject] = useState("")

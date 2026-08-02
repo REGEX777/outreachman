@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
+import { Toaster } from "sonner";
+
 import "./globals.css";
 
 
@@ -37,6 +39,7 @@ export default function RootLayout({
           showSpinner={false}
         />
         {children}
+        <Toaster />
       </body>
     </html>
   );
