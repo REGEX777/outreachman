@@ -6,11 +6,12 @@ type props = {
     email: string,
     name: string,
     extraData: Record<string, unknown>,
+    uploadRowId: string,
     emailColumn: string | null,
     nameColumn: string | null
 }
 
-export default function Form({name, email, extraData, emailColumn, nameColumn}: props) {
+export default function Form({name, email, extraData, emailColumn, nameColumn, uploadRowId}: props) {
 
     const [submitting, setSubmitting] = useState(false)
     const [subject, setSubject] = useState("")
@@ -25,7 +26,7 @@ export default function Form({name, email, extraData, emailColumn, nameColumn}: 
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    // uploadRowId,
+                    uploadRowId,
                     subject,
                     body,
                 }),

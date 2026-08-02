@@ -29,6 +29,10 @@ export default async function ContactViewer({params}: props) {
         }
     })
 
+    if(!row){
+        notFound()
+    }
+
     const data = row?.data as Record<string, any>;
     const name = upload.nameColumn
         ? data[upload.nameColumn]
@@ -43,7 +47,7 @@ export default async function ContactViewer({params}: props) {
     return (
         <div className="min-h-screen w-full bg-[#0a0a0b] text-white font-sans antialiased flex flex-col">
             <Nav />
-            <Form name={name} email={email} extraData={data} emailColumn={upload.emailColumn} nameColumn={upload.nameColumn} />
+            <Form name={name} email={email} extraData={data} emailColumn={upload.emailColumn} nameColumn={upload.nameColumn} uploadRowId={row.id} />
         </div>
     )
 }
