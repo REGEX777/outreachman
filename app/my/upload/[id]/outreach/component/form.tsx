@@ -10,17 +10,20 @@ type props = {
     uploadRowId: string,
     emailColumn: string | null,
     nameColumn: string | null,
+    mode: "create" | "edit",
+    initialSubject?: string;
+    initialBody?: string;
     index: number,
 }
 
-export default function Form({name, email, extraData, emailColumn, nameColumn, uploadRowId, index}: props) {
+export default function Form({name, email, extraData, emailColumn, nameColumn, uploadRowId, index, initialSubject, initialBody, mode}: props) {
 
     const router = useRouter();
 
 
     const [submitting, setSubmitting] = useState(false)
-    const [subject, setSubject] = useState("")
-    const [body, setBody] = useState("")
+    const [subject, setSubject] = useState(initialSubject ?? "")
+    const [body, setBody] = useState(initialBody ?? "")
     const [loading, setLoading] = useState(false);
 
 
@@ -34,14 +37,24 @@ export default function Form({name, email, extraData, emailColumn, nameColumn, u
             alert("Body cannot be empty");
             return;
         }
-        
+
         setSubmitting(true)
+
+        const url =
+            mode === "create"
+                ? "/api/drafts"
+                : `/api/drafts/${uploadRowId}`;
+
+        const method =
+            mode === "create"
+                ? "POST"
+                : "PATCH";
 
 
         try {
             setLoading(true)
-            const response = await fetch("/api/drafts", {
-                method: "POST",
+            const response = await fetch(url, {
+                method: method,
                 headers: {
                     "Content-Type": "application/json",
                 },

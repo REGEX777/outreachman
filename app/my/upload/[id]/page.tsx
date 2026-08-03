@@ -148,9 +148,18 @@ export default async function upload({params}: Props) {
                                                 </td>
                                             ))}
                                             <td className="px-4 py-3 whitespace-nowrap">
-                                                <button className="h-5 flex items-center justify-center px-2 cursor-pointer text-black bg-white text-sm rounded-sm">
+                                            {row.status === "EMPTY" ? (
+                                                <span className="h-5 flex items-center justify-center px-2 text-white/40 bg-white/20 text-sm rounded-sm cursor-not-allowed">
                                                     Edit
-                                                </button>
+                                                </span>
+                                            ) : (
+                                                <Link
+                                                    href={`/my/upload/${upload.id}/edit/${row.id}`}
+                                                    className="h-5 flex items-center justify-center px-2 text-black bg-white hover:bg-white/80 text-sm rounded-sm"
+                                                >
+                                                    Edit
+                                                </Link>
+                                            )}
                                             </td>
                                         </tr>
                                     )
