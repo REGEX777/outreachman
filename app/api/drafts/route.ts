@@ -5,9 +5,32 @@ import { notFound } from "next/navigation";
 export async function POST(req: Request) {
     const body = await req.json()
 
+    if(!body.body){
+        return Response.json(
+            {
+                success: false,
+                error: "Body Empty",
+            },
+            {
+                status: 400,
+            }
+        );
+    }
+
+    if (!body.subject) {
+        return Response.json(
+            {
+                success: false,
+                error: "Subject Empty",
+            },
+            {
+                status: 400,
+            }
+        );
+    }
     const row = await prisma.uploadRow.update({
         where: {id: body.uploadRowId},
-        data: {subject: body.subject, body: body.body}
+        data: {subject: body.subject, body: body.body, status: "DRAFT"}
     })
 
     console.log(row.rowIndex)

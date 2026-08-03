@@ -38,6 +38,7 @@ model Upload {
 }
 
 enum EmailStatus {
+  EMPTY
   DRAFT
   QUEUED
   SENDING
@@ -61,7 +62,7 @@ model UploadRow {
   subject String?
   body String?
 
-  status EmailStatus @default(DRAFT)
+  status EmailStatus @default(EMPTY)
 
   messageId String?
 

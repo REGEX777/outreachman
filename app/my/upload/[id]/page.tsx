@@ -113,6 +113,9 @@ export default async function upload({params}: Props) {
                                             {header}
                                         </th>
                                     ))}
+                                    <th className="text-left font-medium text-white/50 text-xs uppercase tracking-wide px-4 py-3 whitespace-nowrap">
+                                        Actions
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -144,6 +147,11 @@ export default async function upload({params}: Props) {
                                                     {data?.[header] ?? "—"}
                                                 </td>
                                             ))}
+                                            <td className="px-4 py-3 whitespace-nowrap">
+                                                <button className="h-5 flex items-center justify-center px-2 cursor-pointer text-black bg-white text-sm rounded-sm">
+                                                    Edit
+                                                </button>
+                                            </td>
                                         </tr>
                                     )
                                 })}

@@ -25,7 +25,19 @@ export default function Form({name, email, extraData, emailColumn, nameColumn, u
 
 
     async function handleSubmit(){
+        if (!subject.trim()) {
+            alert("Subject cannot be empty");
+            return;
+        }
+
+        if (!body.trim()) {
+            alert("Body cannot be empty");
+            return;
+        }
+        
         setSubmitting(true)
+
+
         try {
             setLoading(true)
             const response = await fetch("/api/drafts", {
@@ -39,19 +51,20 @@ export default function Form({name, email, extraData, emailColumn, nameColumn, u
                     body,
                 }),
             })
-
+            const result = await response.json();
             if (!response.ok) {
-                throw new Error("Failed to save draft");
+                throw new Error(result.error);
             }
 
-            // setSubject("")
-            // setBody("")
+            setSubject("")
+            setBody("")
             router.refresh();
             setLoading(false)
             // do stuff
         } catch (error) {
             console.log(error)
-            alert('something went wrong')
+            alert('Something went wrong')
+            setLoading(false)
         }finally{
             setSubmitting(false)
         }
@@ -75,6 +88,7 @@ export default function Form({name, email, extraData, emailColumn, nameColumn, u
                     <input
                         type="text"
                         value={subject}
+                        required
                         onChange={(e) => setSubject(e.target.value)}
                         placeholder="Subject"
                         className="w-full bg-[#111113] border border-white/[0.06] rounded-lg px-4 py-3 text-sm text-white placeholder:text-white/30 outline-none focus:border-white/20 transition-colors"
@@ -83,6 +97,7 @@ export default function Form({name, email, extraData, emailColumn, nameColumn, u
                     <textarea
                         value={body}
                         onChange={(e) => setBody(e.target.value)}
+                        required
                         placeholder="Body"
                         className="w-full flex-1 min-h-[400px] bg-[#111113] border border-white/[0.06] rounded-lg px-4 py-3 text-sm text-white placeholder:text-white/30 outline-none focus:border-white/20 transition-colors resize-none leading-relaxed"
                     />

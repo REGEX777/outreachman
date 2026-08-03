@@ -43,9 +43,9 @@ export default function HistoryCard({upload}: props) {
             <div className="flex flex-row items-center justify-center gap-2.5">
                 <DropDownBtn id={upload.id} />
 
-                <button className="bg-white text-black hover:bg-white/90 transition-colors duration-200 rounded-lg cursor-pointer py-1.5 px-3.5 text-sm font-medium">
-                    Start Campaign
-                </button>
+                <Link href={`/my/upload/${upload.id}`} className="bg-white text-black hover:bg-white/90 transition-colors duration-200 rounded-lg cursor-pointer py-1.5 px-3.5 text-sm font-medium">
+                    View
+                </Link>
 
                 <DeleteButton id={upload.id} fileName={upload.fileName} />
 
