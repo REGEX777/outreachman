@@ -69,8 +69,11 @@ export default function Form({name, email, extraData, emailColumn, nameColumn, u
                 throw new Error(result.error);
             }
 
-            setSubject("")
-            setBody("")
+            if(mode!=="edit"){
+                setSubject("")
+                setBody("")
+            }
+
             router.refresh();
             setLoading(false)
             // do stuff
@@ -121,7 +124,7 @@ export default function Form({name, email, extraData, emailColumn, nameColumn, u
                             disabled={submitting}
                             className="bg-white text-black hover:bg-white/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 rounded-lg cursor-pointer py-2 px-4 text-sm font-medium"
                         >
-                            {submitting ? "Sending..." : "Submit / Next"}
+                            {mode === "edit" ? "Submit" : submitting ? "Sending..." : "Submit / Next" }
                         </button>
                     </div>
                 </div>
