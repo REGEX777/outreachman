@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
 
+import Settings from "./my/components/Settings";
+
 import "./globals.css";
 
 
@@ -38,6 +40,7 @@ export default function RootLayout({
           height={3}
           showSpinner={false}
         />
+        <Settings />
         {children}
         <Toaster />
       </body>

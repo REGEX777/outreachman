@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Upload } from "@prisma/client";
 
 type props = {
     email: string,
@@ -14,12 +15,13 @@ type props = {
     initialSubject?: string;
     initialBody?: string;
     index: number,
+    upload?: Upload
 }
 
-export default function Form({name, email, extraData, emailColumn, nameColumn, uploadRowId, index, initialSubject, initialBody, mode}: props) {
+export default function Form({name, email, extraData, uploadRowId, index, initialSubject, initialBody, upload, mode}: props) {
 
     const router = useRouter();
-
+    const {emailColumn, nameColumn, currentRow} = upload ?? {};
 
     const [submitting, setSubmitting] = useState(false)
     const [subject, setSubject] = useState(initialSubject ?? "")
@@ -132,9 +134,28 @@ export default function Form({name, email, extraData, emailColumn, nameColumn, u
                 {/* Right — row data panel */}
                 <div className="w-80 flex flex-col gap-3">
                     <div className="bg-[#111113] border border-white/[0.06] rounded-lg px-4 py-3">
-                        <p className="text-xs text-white/40 mb-1">Index</p>
-                        <p className="text-sm text-white/60">{index}</p>
+                        {upload && (
+                            <div className="flex flex-col items-end w-full">
+                                <p className="text-xs text-white/40">Current progress</p>
+                                <div className="flex flex-row items-center gap-2 mt-0.5 w-full">
+                                    <p className="text-sm font-medium w-[20%]">
+                                        {upload?.currentRow} <span className="text-white/40">/ {upload.totalRows}</span>
+                                    </p>
+                                    <div className="w-[80%] h-1.5 rounded-full bg-white/10 overflow-hidden">
+                                        <div
+                                            className="h-full bg-emerald-400 rounded-full"
+                                            style={{ width: `${upload.totalRows > 0 ? (upload.currentRow / upload.totalRows) * 100 : 0}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
+                    <div className="bg-[#111113] border border-white/[0.06] rounded-lg px-4 py-3">
+                        <p className="text-xs text-white/40 mb-1">Index</p>
+                        <p className="text-sm text-white/60">{currentRow}</p>
+                    </div>
+
                     <div className="bg-[#111113] border border-white/[0.06] rounded-lg px-4 py-3">
                         <p className="text-xs text-white/40 mb-1">Email</p>
                         <p className="text-sm text-white/60">{email}</p>

@@ -52,7 +52,7 @@ export default async function ContactViewer({params}: props) {
     return (
         <div className="min-h-screen w-full bg-[#0a0a0b] text-white font-sans antialiased flex flex-col">
             <Nav />
-            <Form name={name} email={email} extraData={data} emailColumn={upload.emailColumn} nameColumn={upload.nameColumn} uploadRowId={row.id} index={upload.currentRow} mode="create"/>
+            <Form name={name} email={email} extraData={data} emailColumn={upload.emailColumn} nameColumn={upload.nameColumn} uploadRowId={row.id} index={upload.currentRow} upload={upload} mode="create"/>
         </div>
     )
 }
