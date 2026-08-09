@@ -5,6 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { ArrowRight02Icon, Settings02Icon, MailAtSign02Icon, Database02Icon, UserIcon } from '@hugeicons/core-free-icons'
 
 import { useSettingsStore } from '@/store/settingsStore';
+import ApiConfig from './subElements/ApiConfig';
 
 const tabs = [
     { id: "api", label: "API Configuration", icon: Settings02Icon },
@@ -70,7 +71,7 @@ export default function Settings(){
 
                     {/* Content */}
                     <div className="flex-1 h-full overflow-y-auto px-6 py-5">
-                        {activeTab === "api" && <p className="text-white/70 text-sm">API Configuration content</p>}
+                        {activeTab === "api" && <ApiConfig />}
                         {activeTab === "email" && <p className="text-white/70 text-sm">Email Settings content</p>}
                     </div>
                 </div>
