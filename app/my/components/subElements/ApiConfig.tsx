@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import {toast} from "sonner"
 
 
 export default function ApiConfig() {
@@ -13,13 +14,41 @@ export default function ApiConfig() {
     const [fromName, setFromName] = useState("")
     const [fromEmail, setFromEmail] = useState("")
 
+    const [isTesting, setIsTesting] = useState(false)
+
+    function isFormValid(){
+        return (
+            host.trim() !== "" &&
+            port.trim() !== "" &&
+            username.trim() !== "" &&
+            password.trim() !== "" &&
+            fromName.trim() !== "" &&
+            fromEmail.trim() !== ""
+        )
+    }
+
+    function handleTest(){
+        if (!isFormValid()) {
+            toast.error('Please Fill The Required Fields')
+            return
+        }
+
+        console.log(host)
+        console.log(port)
+        console.log(username)
+        console.log(password)
+        console.log(fromName)
+        console.log(fromEmail)
+
+        return setIsTesting(true)
+    }
+
     return (
         <div className="w-full rounded-lg bg-[#111113] border border-white/[0.06] flex flex-col gap-4 px-6 py-6">
             <div>
                 <h2 className="text-sm font-medium text-white">SMTP Configuration</h2>
                 <p className="text-xs text-white/40 mt-1">Configure the outgoing mail server used for outreach</p>
             </div>
-
             {/* Host + Port */}
             <div className="flex flex-row gap-3">
                 <div className="flex-1 flex flex-col gap-1.5">
@@ -35,7 +64,7 @@ export default function ApiConfig() {
                 <div className="w-28 flex flex-col gap-1.5">
                     <label className="text-xs text-white/40">Port</label>
                     <input
-                        type="text"
+                        type="number"
                         inputMode="numeric"
                         value={port}
                         onChange={(e) => setPort(e.target.value)}
@@ -130,12 +159,12 @@ export default function ApiConfig() {
                 <div className="flex flex-row gap-2">
                     <button
                         type="button"
-                        // onClick={handleTest}
-                        // disabled={isTesting}
+                        onClick={handleTest}
+                        disabled={isTesting || !isFormValid()}
                         className="bg-[#1C1C1E] border border-white/[0.06] text-white hover:border-white/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 rounded-lg cursor-pointer py-2 px-4 text-sm font-medium"
                     >
-                        Test Connection
-                        {/* {isTesting ? "Testing..." : "Test Connection"} */}
+                        
+                        {isTesting ? "Testing..." : "Test Connection"}
                     </button>
                     <button
                         type="button"
