@@ -14,6 +14,7 @@ export default function ApiConfig() {
     const [password, setPassword] = useState("")
     const [fromName, setFromName] = useState("")
     const [fromEmail, setFromEmail] = useState("")
+    const [testResult, setTestResult] = useState("")
 
     const [isTesting, setIsTesting] = useState(false)
 
@@ -34,17 +35,10 @@ export default function ApiConfig() {
             toast.error('Please Fill The Required Fields')
             return
         }
-
-        console.log(host)
-        console.log(port)
-        console.log(username)
-        console.log(password)
-        console.log(fromName)
-        console.log(fromEmail)
-
         const body = JSON.stringify({
             host,
-            port,
+            port: Number(port),
+            secure: secure === "ssl",
             username,
             password,
             fromName,
@@ -60,8 +54,11 @@ export default function ApiConfig() {
         })
 
         const result = await test.json();
-        console.log(result)
-        console.log('Success:', result);
+        if(result.error && !result.success){
+            setTestResult("error")
+        }
+
+        setTestResult("success")
 
         return setIsTesting(false)
     }
@@ -176,8 +173,8 @@ export default function ApiConfig() {
             {/* Actions */}
             <div className="flex flex-row items-center justify-between mt-1">
                 <div className="text-xs">
-                    {/* testResult === "success" && <span className="text-emerald-400">Connection successful</span> */}
-                    {/* testResult === "error" && <span className="text-red-400">Connection failed</span> */}
+                    {testResult === "success" && <span className="text-emerald-400">Connection successful</span>}
+                    {testResult === "error" && <span className="text-red-400">Connection failed</span>}
                 </div>
                 <div className="flex flex-row gap-2">
                     <button
