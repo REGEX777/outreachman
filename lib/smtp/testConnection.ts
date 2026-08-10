@@ -22,8 +22,13 @@ export async function testSMTPConnection(config: SMTPConfig){
 
     try{
         await transport.verify()
-        console.log("Server Is ready")
+        return {
+            success: true
+        }
     }catch(err){
-        console.error("Verification failed:", err);
+        return {
+            success: false,
+            error: "Connection to the SMTP server failed."
+        }
     }
 }

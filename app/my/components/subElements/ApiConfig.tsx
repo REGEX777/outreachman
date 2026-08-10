@@ -1,5 +1,6 @@
 "use client"
 
+import { POST } from "@/app/api/drafts/route"
 import { useState } from "react"
 import {toast} from "sonner"
 
@@ -27,7 +28,8 @@ export default function ApiConfig() {
         )
     }
 
-    function handleTest(){
+    async function handleTest(){
+        setIsTesting(true)
         if (!isFormValid()) {
             toast.error('Please Fill The Required Fields')
             return
@@ -40,7 +42,28 @@ export default function ApiConfig() {
         console.log(fromName)
         console.log(fromEmail)
 
-        return setIsTesting(true)
+        const body = JSON.stringify({
+            host,
+            port,
+            username,
+            password,
+            fromName,
+            fromEmail
+        })
+
+        const test = await fetch('/api/smtp/test', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body
+        })
+
+        const result = await test.json();
+        console.log(result)
+        console.log('Success:', result);
+
+        return setIsTesting(false)
     }
 
     return (
