@@ -37,6 +37,25 @@ model Upload {
   rows        UploadRow[]
 }
 
+model SMTPconfig {
+  id String @id @default(cuid())
+
+  host String
+  port Int
+  security String
+
+  username String
+  password String
+
+  fromName String
+  fromEmail String
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+
+
 enum EmailStatus {
   EMPTY
   DRAFT

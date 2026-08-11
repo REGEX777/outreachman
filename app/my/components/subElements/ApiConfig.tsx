@@ -4,6 +4,7 @@ import { POST } from "@/app/api/drafts/route"
 import { useState } from "react"
 import {toast} from "sonner"
 import { Oval } from "react-loader-spinner"
+import { prisma } from "@/lib/prisma"
 
 
 export default function ApiConfig() {
@@ -107,6 +108,31 @@ export default function ApiConfig() {
             return setIsSaving(false)
         }
 
+
+        await prisma.sMTPconfig.upsert({
+            where: {
+                id: "default"
+            },
+            create: {
+                id: "default",
+                host,
+                port: Number(port),
+                username,
+                password,
+                fromName,
+                fromEmail,
+                security: secure
+            },
+            update: {
+                host,
+                port: Number(port),
+                username,
+                password,
+                fromName,
+                fromEmail,
+                security: secure
+            }
+        })
 
 
         console.log(result)
