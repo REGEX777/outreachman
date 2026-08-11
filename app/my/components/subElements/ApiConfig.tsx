@@ -15,6 +15,7 @@ export default function ApiConfig() {
     const [fromName, setFromName] = useState("")
     const [fromEmail, setFromEmail] = useState("")
     const [testResult, setTestResult] = useState("")
+    const [isSaving, setIsSaving] = useState(false)
 
     const [isTesting, setIsTesting] = useState(false)
 
@@ -54,13 +55,51 @@ export default function ApiConfig() {
         })
 
         const result = await test.json();
-        if(result.error && !result.success){
+        if(!result.success){
             setTestResult("error")
+            return setIsTesting(false)
         }
 
+
+        console.log(result)
         setTestResult("success")
 
         return setIsTesting(false)
+    }
+
+    async function handleSave(){
+        setIsSaving(true)
+        if (!isFormValid()) {
+            toast.error('Please Fill The Required Fields')
+            return setIsSaving(false)
+        }
+        const body = JSON.stringify({
+            host,
+            port: Number(port),
+            secure: secure === "ssl",
+            username,
+            password,
+            fromName,
+            fromEmail
+        })
+
+        const test = await fetch('/api/smtp/test', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body
+        })
+
+        const result = await test.json();
+        // if(result.error && !result.success){
+        //     setTestResult("error")
+        // }
+
+        console.log(result)
+        console.log(body)
+
+        setIsSaving(false)
     }
 
     return (
@@ -188,12 +227,11 @@ export default function ApiConfig() {
                     </button>
                     <button
                         type="button"
-                        // onClick={handleSave}
-                        // disabled={isSaving}
+                        onClick={handleSave}
+                        disabled={isSaving}
                         className="bg-white text-black hover:bg-white/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 rounded-lg cursor-pointer py-2 px-4 text-sm font-medium"
                     >
-                        Save
-                        {/* {isSaving ? "Saving..." : "Save"} */}
+                        {isSaving ? "Saving..." : "Save"}
                     </button>
                 </div>
             </div>
