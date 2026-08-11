@@ -3,6 +3,7 @@
 import { POST } from "@/app/api/drafts/route"
 import { useState } from "react"
 import {toast} from "sonner"
+import { Oval } from "react-loader-spinner"
 
 
 export default function ApiConfig() {
@@ -32,6 +33,7 @@ export default function ApiConfig() {
 
     async function handleTest(){
         setIsTesting(true)
+        setTestResult("loading")
         if (!isFormValid()) {
             toast.error('Please Fill The Required Fields')
             return
@@ -69,10 +71,14 @@ export default function ApiConfig() {
 
     async function handleSave(){
         setIsSaving(true)
+        setTestResult("loading")
+        console.log("req sent 1")
         if (!isFormValid()) {
             toast.error('Please Fill The Required Fields')
             return setIsSaving(false)
         }
+
+
         const body = JSON.stringify({
             host,
             port: Number(port),
@@ -83,6 +89,8 @@ export default function ApiConfig() {
             fromEmail
         })
 
+        console.log("req sent 3")
+
         const test = await fetch('/api/smtp/test', {
             method: "POST",
             headers: {
@@ -91,14 +99,20 @@ export default function ApiConfig() {
             body
         })
 
+        console.log("req sent 4")
+
         const result = await test.json();
-        // if(result.error && !result.success){
-        //     setTestResult("error")
-        // }
+        if(result.error && !result.success){
+            setTestResult("error")
+            return setIsSaving(false)
+        }
+
+
 
         console.log(result)
         console.log(body)
 
+        setTestResult("success")
         setIsSaving(false)
     }
 
@@ -213,6 +227,20 @@ export default function ApiConfig() {
             <div className="flex flex-row items-center justify-between mt-1">
                 <div className="text-xs">
                     {testResult === "success" && <span className="text-emerald-400">Connection successful</span>}
+                    {testResult === "loading" &&  
+                        <Oval
+                            height={30}
+                            color="#fff"
+                            wrapperStyle={{}}
+                            wrapperClass=""
+                            visible={true}
+                            ariaLabel='oval-loading'
+                            secondaryColor="#fefefe"
+                            strokeWidth={3}
+                            strokeWidthSecondary={3}
+                        />
+                    }
+
                     {testResult === "error" && <span className="text-red-400">Connection failed</span>}
                 </div>
                 <div className="flex flex-row gap-2">
