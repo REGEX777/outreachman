@@ -1,10 +1,11 @@
 "use client"
 
 import { POST } from "@/app/api/drafts/route"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {toast} from "sonner"
 import { Oval } from "react-loader-spinner"
 import { prisma } from "@/lib/prisma"
+
 
 
 export default function ApiConfig() {
@@ -19,14 +20,38 @@ export default function ApiConfig() {
     const [testResult, setTestResult] = useState("")
     const [isSaving, setIsSaving] = useState(false)
 
+    const [HasSavedPassword, setHasSavedPassword] = useState(false)
+
     const [isTesting, setIsTesting] = useState(false)
+
+    useEffect(()=>{
+        async function loadConfig(){
+            const res = await fetch('/api/smtp/config')
+            const data = await res.json()
+            
+            if (!data.config) return
+
+            console.log(data.config)
+
+            setHost(data.config.host)
+            setPort(String(data.config.port))
+            setUsername(data.config.username)
+            setFromName(data.config.fromName)
+            setFromEmail(data.config.fromEmail)
+            setSecure(data.config.security)
+
+            setHasSavedPassword(true)
+        }
+
+        loadConfig()
+    }, [])
 
     function isFormValid(){
         return (
             host.trim() !== "" &&
             port.trim() !== "" &&
             username.trim() !== "" &&
-            password.trim() !== "" &&
+            (HasSavedPassword || password.trim() !== "") &&
             fromName.trim() !== "" &&
             fromEmail.trim() !== ""
         )
@@ -84,6 +109,7 @@ export default function ApiConfig() {
             host,
             port: Number(port),
             secure: secure === "ssl",
+            security: secure,
             username,
             password,
             fromName,
@@ -92,7 +118,7 @@ export default function ApiConfig() {
 
         console.log("req sent 3")
 
-        const test = await fetch('/api/smtp/test', {
+        const test = await fetch('/api/smtp/save', {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -108,31 +134,6 @@ export default function ApiConfig() {
             return setIsSaving(false)
         }
 
-
-        await prisma.sMTPconfig.upsert({
-            where: {
-                id: "default"
-            },
-            create: {
-                id: "default",
-                host,
-                port: Number(port),
-                username,
-                password,
-                fromName,
-                fromEmail,
-                security: secure
-            },
-            update: {
-                host,
-                port: Number(port),
-                username,
-                password,
-                fromName,
-                fromEmail,
-                security: secure
-            }
-        })
 
 
         console.log(result)
@@ -219,7 +220,7 @@ export default function ApiConfig() {
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder="••••••••"
+                        placeholder={HasSavedPassword ? "••••••••••••" : "Password"}
                         className="w-full bg-[#1C1C1E] border border-white/[0.06] rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-white/30 outline-none focus:border-white/20 transition-colors"
                     />
                 </div>
@@ -282,7 +283,7 @@ export default function ApiConfig() {
                     <button
                         type="button"
                         onClick={handleSave}
-                        disabled={isSaving}
+                        disabled={isSaving || !isFormValid()}
                         className="bg-white text-black hover:bg-white/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 rounded-lg cursor-pointer py-2 px-4 text-sm font-medium"
                     >
                         {isSaving ? "Saving..." : "Save"}
