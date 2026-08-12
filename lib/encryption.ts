@@ -15,7 +15,7 @@ const KEY = Buffer.from(
 )
 
 
-async function encrypt(text :string) {
+function encrypt(text :string) {
     const iv = crytpo.randomBytes(12)
 
     const cipher = crytpo.createCipheriv(
@@ -38,4 +38,26 @@ async function encrypt(text :string) {
     ].join(":")
 }
 
-export {encrypt}
+
+function decrypt(value: string){
+    const [ivHex, encryptedHex, authtagHex] = value.split(":")
+
+    const decipher = crytpo.createDecipheriv(
+        ALGORITHM, KEY, Buffer.from(ivHex, "hex")
+    )
+
+    decipher.setAuthTag(
+        Buffer.from(authtagHex, "hex")
+    )
+
+    const decrypted = Buffer.concat([
+        decipher.update(
+            Buffer.from(encryptedHex, "hex")
+        ),
+        decipher.final()
+    ])
+
+    return decrypted.toString("utf8")
+}
+
+export {encrypt, decrypt}

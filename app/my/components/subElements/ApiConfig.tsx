@@ -69,7 +69,7 @@ export default function ApiConfig() {
             port: Number(port),
             secure: secure === "ssl",
             username,
-            password,
+            password: password || undefined,
             fromName,
             fromEmail
         })
@@ -111,7 +111,7 @@ export default function ApiConfig() {
             secure: secure === "ssl",
             security: secure,
             username,
-            password,
+            password: password || undefined,
             fromName,
             fromEmail
         })
