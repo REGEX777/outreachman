@@ -95,7 +95,6 @@ export default function my(){
 
 
         const data = await res.json();
-        console.log(data)
         setLoading(false)
 
         if (!res.ok) {

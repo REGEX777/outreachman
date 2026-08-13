@@ -31,7 +31,6 @@ export default function ApiConfig() {
             
             if (!data.config) return
 
-            console.log(data.config)
 
             setHost(data.config.host)
             setPort(String(data.config.port))
@@ -89,7 +88,6 @@ export default function ApiConfig() {
         }
 
 
-        console.log(result)
         setTestResult("success")
 
         return setIsTesting(false)
@@ -98,7 +96,6 @@ export default function ApiConfig() {
     async function handleSave(){
         setIsSaving(true)
         setTestResult("loading")
-        console.log("req sent 1")
         if (!isFormValid()) {
             toast.error('Please Fill The Required Fields')
             return setIsSaving(false)
@@ -116,7 +113,6 @@ export default function ApiConfig() {
             fromEmail
         })
 
-        console.log("req sent 3")
 
         const test = await fetch('/api/smtp/save', {
             method: "POST",
@@ -126,18 +122,12 @@ export default function ApiConfig() {
             body
         })
 
-        console.log("req sent 4")
-
         const result = await test.json();
         if(result.error && !result.success){
             setTestResult("error")
             return setIsSaving(false)
         }
 
-
-
-        console.log(result)
-        console.log(body)
 
         setTestResult("success")
         setIsSaving(false)

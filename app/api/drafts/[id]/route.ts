@@ -2,7 +2,6 @@ import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 export async function PATCH(req: Request) {
     const body = await req.json()
-    console.log(body)
     
     if (!body.uploadRowId) {
         return Response.json(

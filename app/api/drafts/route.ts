@@ -33,12 +33,11 @@ export async function POST(req: Request) {
         data: {subject: body.subject, body: body.body, status: "DRAFT"}
     })
 
-    console.log(row.rowIndex)
 
     const upload = await prisma.upload.findUnique({where: {id: row.uploadId}})
 
     if(!upload){ 
-        console.log("hein kya, ye kya bak rahe ho")
+        console.log("No Uploads")
         return notFound()
     }
 
@@ -47,8 +46,6 @@ export async function POST(req: Request) {
     }else{
         await prisma.upload.update({where: {id: row.uploadId}, data: {currentRow: {increment: 1}}})
     }
-
-    console.log(upload)
 
     return Response.json({ success: true });
 }

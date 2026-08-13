@@ -26,11 +26,9 @@ export async function POST(req: Request){
         response.password = decrypt(savedConfig.password)
     }
 
-    console.log(response)
 
     const testres = await testSMTPConnection(response);
 
-    console.log(testres)
 
     if(testres.success){
 
@@ -72,32 +70,4 @@ export async function POST(req: Request){
     }
 
 
-
-        // await prisma.sMTPconfig.upsert({
-        //     where: {
-        //         id: "default"
-        //     },
-        //     create: {
-        //         id: "default",
-        //         host,
-        //         port: Number(port),
-        //         username,
-        //         password: await encrypt(password),
-        //         fromName,
-        //         fromEmail,
-        //         security: secure
-        //     },
-        //     update: {
-        //         host,
-        //         port: Number(port),
-        //         username,
-        //         password: await encrypt(password),
-        //         fromName,
-        //         fromEmail,
-        //         security: secure
-        //     }
-        // })
-
-
-    console.log(response)
 }

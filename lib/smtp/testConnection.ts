@@ -10,7 +10,6 @@ type SMTPConfig = {
 }
 
 export async function testSMTPConnection(config: SMTPConfig){
-    console.log("FUNCTION HITTT")
     const transport = nodemailer.createTransport({
         host: config.host,
         port: config.port,
@@ -25,12 +24,9 @@ export async function testSMTPConnection(config: SMTPConfig){
             pass: config.password
         }
     })
-    console.log(config)
-    console.log("TRANSPORT CREATED")
 
     try{
         await transport.verify()
-        console.log("TRANSPORT VERIFIED")
         return {
             success: true
         }
