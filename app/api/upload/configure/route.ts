@@ -25,7 +25,6 @@ export async function POST(req: Request) {
     }
     
     await prisma.upload.update({where: {id: uploadId}, data: {emailColumn, nameColumn: nameColumn??null, configured: true}})
-    
 
     return Response.json({ success: true });
 }

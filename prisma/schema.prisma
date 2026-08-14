@@ -72,9 +72,7 @@ model UploadRow {
   upload Upload @relation(fields: [uploadId], references: [id], onDelete: Cascade)
 
   rowIndex Int
-
-  recipientEmail String?
-  recipientName String?
+ 
 
   data Json
 
