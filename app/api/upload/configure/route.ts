@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 export async function POST(req: Request) {
     const {uploadId, emailColumn, nameColumn} = await req.json();
 
+    console.log(emailColumn, nameColumn)
+
     const upload = await prisma.upload.findUnique({where: {id: uploadId}})
 
     if(!upload){
@@ -23,6 +25,7 @@ export async function POST(req: Request) {
     }
     
     await prisma.upload.update({where: {id: uploadId}, data: {emailColumn, nameColumn: nameColumn??null, configured: true}})
+    
 
     return Response.json({ success: true });
 }
