@@ -5,6 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { FileSpreadsheetIcon } from '@hugeicons/core-free-icons'
 import ConfigureModal from "../../components/ConfigureModal";
 import Link from "next/link";
+import SendMailButton from "../../components/subElements/sendMailBtn";
 
 type Props = {
     params: Promise<{
@@ -58,6 +59,7 @@ export default async function upload({params}: Props) {
                     </div>
 
                     <div className="flex flex-row items-center gap-6">
+                        { upload.draftsWritten > 0 ? <SendMailButton uploadID={upload.id} /> : null}
 
                         <Link
                             href={`/my/upload/${id}/outreach`}
@@ -72,19 +74,7 @@ export default async function upload({params}: Props) {
                         >
                             {upload.currentRow > 0 ? "Continue" : "Start"} composing draft
                         </Link>
-                        <Link
-                            href={`/my/upload/${id}/outreach`}
-                            className={`
-                                rounded-lg py-1.5 px-3.5 text-sm font-medium transition-colors duration-200
-                                ${
-                                    upload.status === "DRAFT"
-                                        ? "bg-white text-black hover:bg-white/90"
-                                        : "bg-white/20 text-white/40 pointer-events-none cursor-not-allowed"
-                                }
-                            `}
-                        >
-                            Send Emails
-                        </Link>
+
                         <div className="flex flex-col items-end">
                             <p className="text-xs text-white/40">Rows</p>
                             <p className="text-sm font-medium mt-0.5">{upload.totalRows}</p>

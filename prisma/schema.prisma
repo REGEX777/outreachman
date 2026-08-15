@@ -38,12 +38,18 @@ model Upload {
   rows        UploadRow[]
 }
 
+enum SMTPSecurity {
+    none
+    starttls
+    ssl
+}
+
 model SMTPconfig {
   id String @id @default(cuid())
 
   host String
   port Int
-  security String
+  security SMTPSecurity
 
   username String
   password String
