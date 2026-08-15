@@ -28,6 +28,7 @@ export async function POST(req: Request) {
             }
         );
     }
+    
     const row = await prisma.uploadRow.update({
         where: {id: body.uploadRowId},
         data: {subject: body.subject, body: body.body, status: "DRAFT"}
@@ -40,12 +41,8 @@ export async function POST(req: Request) {
         console.log("No Uploads")
         return notFound()
     }
-
-    if(upload.currentRow >= upload.totalRows){
-        await prisma.upload.update({where: {id: row.uploadId}, data: {status: 'READY'}})
-    }else{
-        await prisma.upload.update({where: {id: row.uploadId}, data: {currentRow: {increment: 1}}})
-    }
+    
+    await prisma.upload.update({where: {id: row.uploadId}, data: {currentRow: {increment: 1}, status: 'READY', draftsWritten: {increment: 1}}})
 
     return Response.json({ success: true });
 }

@@ -72,6 +72,19 @@ export default async function upload({params}: Props) {
                         >
                             {upload.currentRow > 0 ? "Continue" : "Start"} composing draft
                         </Link>
+                        <Link
+                            href={`/my/upload/${id}/outreach`}
+                            className={`
+                                rounded-lg py-1.5 px-3.5 text-sm font-medium transition-colors duration-200
+                                ${
+                                    upload.status === "DRAFT"
+                                        ? "bg-white text-black hover:bg-white/90"
+                                        : "bg-white/20 text-white/40 pointer-events-none cursor-not-allowed"
+                                }
+                            `}
+                        >
+                            Send Emails
+                        </Link>
                         <div className="flex flex-col items-end">
                             <p className="text-xs text-white/40">Rows</p>
                             <p className="text-sm font-medium mt-0.5">{upload.totalRows}</p>

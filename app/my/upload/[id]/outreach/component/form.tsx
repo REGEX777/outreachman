@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { Upload } from "@prisma/client";
 
 type props = {
@@ -27,6 +27,10 @@ export default function Form({name, email, extraData, uploadRowId, index, initia
     const [subject, setSubject] = useState(initialSubject ?? "")
     const [body, setBody] = useState(initialBody ?? "")
     const [loading, setLoading] = useState(false);
+
+    if(upload?.status === "COMPLETED"){
+        return redirect(`/my/upload/${upload.id}`)
+    }
 
 
     async function handleSubmit(){

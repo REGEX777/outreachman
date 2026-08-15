@@ -26,7 +26,11 @@ export default async function ContactViewer({params}: props) {
 
     if(upload.currentRow >= upload.totalRows){
         await prisma.upload.update({where: {id: upload.id}, data: {status: 'READY'}})
-        redirect(`/my/upload/${id}`)
+        return redirect(`/my/upload/${id}`)
+    }
+
+    if(upload.status === "COMPLETED"){
+        return redirect(`/my/upload/${id}`)
     }
 
     const row = await prisma.uploadRow.findFirst({

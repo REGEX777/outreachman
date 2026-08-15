@@ -15,7 +15,7 @@ datasource db {
 
 enum UploadStatus {
   DRAFT
-  READY
+  READY // At least one valid draft exists and the upload can be sent.
   SENDING
   COMPLETED
 }
@@ -26,6 +26,7 @@ model Upload {
   headers String[]
   totalRows Int
   currentRow Int @default(0)
+  draftsWritten Int @default(0)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   emailColumn String?
@@ -93,4 +94,5 @@ model UploadRow {
 
   @@index([uploadId])
   @@index([status])
+  @@unique([uploadId, rowIndex])
 }

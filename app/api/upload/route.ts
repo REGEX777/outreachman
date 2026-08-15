@@ -34,7 +34,6 @@ export async function POST(req: Request) {
         data: rows.map((row, index)=>({
             uploadId: upload.id,
             rowIndex: index,
-            recipientEmail: null,
             data: row
         }))
     })
