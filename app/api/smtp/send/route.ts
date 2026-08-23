@@ -36,6 +36,8 @@ export async function POST(req: Request) {
             return
         }
 
+        
+
         const data = e.data as Record<string, unknown>
 
         const email = data[emailColumn]
@@ -48,14 +50,45 @@ export async function POST(req: Request) {
 
         if (typeof email !== "string" || !email.trim()) {
             console.log("Invalid email:", email)
+            await prisma.upload.update({where: {id: e.uploadId}, data: { failedEmails: +1}})
             continue
         }
+
+        await prisma.uploadRow.update({
+            where: {
+                id: e.id
+            },
+            data: {
+                status: "SENDING"
+            }
+        })
 
         await mailer.sendMail(
             email,
             subject,
             body
         )
+        
+        await prisma.uploadRow.update({
+            where: {
+                id: e.id
+            },
+            data: {
+                status: "SENT",
+                sentAt: new Date()
+            }
+        })
+
+        await prisma.upload.update({
+            where: {
+                id: e.uploadId
+            },
+            data: {
+                sentEmails: {
+                    increment: 1
+                }
+            }
+        })
     }
 
 

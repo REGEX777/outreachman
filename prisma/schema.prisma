@@ -34,7 +34,6 @@ model Upload {
   configured Boolean? @default(false)
   status      UploadStatus @default(DRAFT)
 
-  totalEmails Int @default(0)
   sentEmails Int @default(0)
   failedEmails Int @default(0)
 
