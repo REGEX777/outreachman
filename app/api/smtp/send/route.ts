@@ -41,12 +41,6 @@ export async function POST(req: Request) {
         const data = e.data as Record<string, unknown>
 
         const email = data[emailColumn]
- 
-
-        console.log("COLUMN:", emailColumn)
-        console.log("RAW EMAIL:", email)
-        console.log("JSON EMAIL:", JSON.stringify(email))
-        console.log("EMAIL LENGTH:", typeof email === "string" ? email.length : null)
 
         if (typeof email !== "string" || !email.trim()) {
             console.log("Invalid email:", email)
