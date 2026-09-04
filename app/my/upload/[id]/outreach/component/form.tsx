@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { redirect, useRouter } from "next/navigation";
 import { Upload } from "@prisma/client";
+import { toast } from "sonner";
+import { HugeiconsIcon } from "@hugeicons/react";
+import ArrowLeft02Icon from "@hugeicons/core-free-icons/ArrowLeft02Icon";
 
 type props = {
     email: string,
@@ -32,6 +35,9 @@ export default function Form({name, email, extraData, uploadRowId, index, initia
         return redirect(`/my/upload/${upload.id}`)
     }
 
+    function backToUploadPage(){
+        router.back()
+    }
 
     async function handleSubmit(){
         if (!subject.trim()) {
@@ -80,12 +86,14 @@ export default function Form({name, email, extraData, uploadRowId, index, initia
                 setBody("")
             }
 
+            toast.success("Submitted!")
+
             router.refresh();
             setLoading(false)
             // do stuff
         } catch (error) {
             console.log(error)
-            alert('Something went wrong')
+            toast.success("Something went wrong")
             setLoading(false)
         }finally{
             setSubmitting(false)
@@ -176,6 +184,10 @@ export default function Form({name, email, extraData, uploadRowId, index, initia
                             <p className="text-sm text-white">{String(value)}</p>
                         </div>
                     ))}
+
+                    <button onClick={backToUploadPage} className="bg-white text-black cursor-pointer hover:bg-white/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 rounded-lg py-2 px-4 text-sm font-medium flex flex-row items-center justify-center gap-2">
+                        <HugeiconsIcon icon={ArrowLeft02Icon} /> Back to upload page
+                    </button>
                 </div>
             </main>
     )

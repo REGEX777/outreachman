@@ -66,9 +66,13 @@ export default async function upload({params}: Props) {
                             className={`
                                 rounded-lg py-1.5 px-3.5 text-sm font-medium transition-colors duration-200
                                 ${
-                                    upload.status === "DRAFT"
-                                        ? "bg-white text-black hover:bg-white/90"
-                                        : "bg-white/20 text-white/40 pointer-events-none cursor-not-allowed"
+                                    upload.draftsWritten === upload.totalRows 
+                                        ? "bg-white/20 text-white/40 pointer-events-none cursor-not-allowed" 
+                                        : 
+                                            upload.status === "DRAFT" || upload.status === "READY"
+                                                ? "bg-white text-black hover:bg-white/90"
+                                                : "bg-white/20 text-white/40 pointer-events-none cursor-not-allowed"
+
                                 }
                             `}
                         >
