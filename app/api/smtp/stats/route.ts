@@ -6,7 +6,7 @@ export async function POST(req: Request){
 
     const stats = await prisma.upload.findUnique({select:{
         sentEmails: true,
-        totalRows: true
+        draftsWritten: true
     }, where: {id: request.uploadID}})
 
 

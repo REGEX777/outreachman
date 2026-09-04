@@ -52,7 +52,7 @@ export default function SendMailButton({uploadID}: props) {
         const response = await record.json()
 
         const sent = response.stats.sentEmails
-        const total = response.stats.totalRows
+        const total = response.stats.draftsWritten
 
         setProgress(sent)
         setTotalRows(total)
