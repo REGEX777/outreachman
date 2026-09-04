@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Oval } from "react-loader-spinner"
+import { toast } from "sonner"
 
 type props = {
     uploadID: string
@@ -31,8 +32,8 @@ export default function SendMailButton({uploadID}: props) {
         if (finished) { 
             setTimeout(() => {
                 setSending(false)
+                toast.success(`Emails sent!`)
                 setCompleted(true)
-
                 setTimeout(() => {
                     setCompleted(false)
                 }, 2000)
@@ -56,7 +57,6 @@ export default function SendMailButton({uploadID}: props) {
 
         setProgress(sent)
         setTotalRows(total)
-
         return sent === total
     }
 
