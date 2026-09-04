@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
+import { Suspense } from "react";
+import { AlertListener } from "./my/components/subElements/effects/AlertListener";
 import { Toaster } from "sonner";
 
 import Settings from "./my/components/Settings";
@@ -40,9 +42,12 @@ export default function RootLayout({
           height={3}
           showSpinner={false}
         />
+        <Suspense fallback={null}>
+          <AlertListener />
+        </Suspense>
         <Settings />
         {children}
-        <Toaster />
+        <Toaster position="top-right" />
       </body>
     </html>
   );

@@ -98,11 +98,12 @@ export default function my(){
         setLoading(false)
 
         if (!res.ok) {
-            alert(data.error);
+            console.log(data.error);
+            router.push(`/my/upload?type=error&msg=${encodeURIComponent(data.error || "An Error Occured")}`);
             return;
         }
 
-        router.push(`/my/upload/${data.uploadId}`);
+        router.push(`/my/upload/${data.uploadId}?type=success&msg=${encodeURIComponent(data.message || "Upload Successful")}`);
     }
 
 

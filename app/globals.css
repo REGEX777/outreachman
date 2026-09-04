@@ -24,3 +24,27 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+[data-sonner-toast] {
+  font-family: var(--font-geist-sans);
+}
+
+[data-sonner-toast][data-type="success"] {
+  background: #0a0a0a !important;
+  border: 1px solid #1f2937 !important;
+  color: #ffffff !important;
+}
+
+[data-sonner-toast][data-type="success"] [data-icon] {
+  color: #22c55e !important;
+}
+
+[data-sonner-toast][data-type="error"] {
+  background: #0a0a0a !important;
+  border: 1px solid #3f1d1d !important;
+  color: #ffffff !important;
+}
+
+[data-sonner-toast][data-type="error"] [data-icon] {
+  color: #ef4444 !important;
+}

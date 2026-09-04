@@ -6,6 +6,7 @@ import { Delete02Icon } from '@hugeicons/core-free-icons'
 import { Upload } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { toast } from "sonner";
 
 
 type Props = {
@@ -85,12 +86,18 @@ export default function ConfigureModal({headers, uploadId, upload}: Props) {
             }),
         });
 
+        const data = await res.json()
+
         if (!res.ok) {
             alert("Something went wrong.");
+            toast.error(data.error || 'Something went wrong');
             return;
+        }else{
+            toast.success("Successfully configured")
+            router.refresh();
         }
+        
 
-        router.refresh();
     }
 
     return (
