@@ -128,6 +128,7 @@ export default function ApiConfig() {
             return setIsSaving(false)
         }
 
+        toast.success("Saved!")
 
         setTestResult("success")
         setIsSaving(false)
