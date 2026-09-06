@@ -6,6 +6,7 @@ import { ArrowRight02Icon, Settings02Icon, MailAtSign02Icon, Database02Icon, Use
 
 import { useSettingsStore } from '@/store/settingsStore';
 import ApiConfig from './subElements/ApiConfig';
+import EmailConfig from './subElements/EmailConfig';
 
 const tabs = [
     { id: "api", label: "API Configuration", icon: Settings02Icon },
@@ -15,7 +16,7 @@ const tabs = [
 
 export default function Settings(){
 
-    const [activeTab, setActiveTab] = useState("api")
+    const [activeTab, setActiveTab] = useState("email") // change back to settings
 
     const isOpen = useSettingsStore((state)=> state.isOpen);
     const close = useSettingsStore((state)=> state.close)
@@ -72,7 +73,7 @@ export default function Settings(){
                     {/* Content */}
                     <div className="flex-1 h-full overflow-y-auto px-6 py-5">
                         {activeTab === "api" && <ApiConfig />}
-                        {activeTab === "email" && <p className="text-white/70 text-sm">Email Settings content</p>}
+                        {activeTab === "email" && <EmailConfig />}
                     </div>
                 </div>
             </div>

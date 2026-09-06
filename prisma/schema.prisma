@@ -107,3 +107,8 @@ model UploadRow {
   @@index([status])
   @@unique([uploadId, rowIndex])
 }
+
+model Config {
+  id String @id @default("global")
+  fromNameEnabled Boolean? @default(false)
+}
