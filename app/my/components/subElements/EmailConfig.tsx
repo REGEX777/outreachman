@@ -1,21 +1,11 @@
 import { useState } from "react"
 
 type Props = {
-    fromNameEnabled: boolean
+    fromNameEnabled: boolean,
+    onChange: (checked: boolean) => void
 }
 
-export default function EmailConfig({fromNameEnabled}: Props){
-
-    const [enabled, setEnabled] = useState(fromNameEnabled ? fromNameEnabled : false)
-
-    async function handleChange(checked: boolean){
-        setEnabled(checked)
-        fetch('/api/config/', {
-            method: "PATCH",
-            body: JSON.stringify({fromNameEnabled: checked})
-        })
-    }
-
+export default function EmailConfig({fromNameEnabled, onChange}: Props){
     return(
         <div className="flex flex-col items-start justify-center gap-4">
             <p>Email Settings</p>
@@ -32,8 +22,8 @@ export default function EmailConfig({fromNameEnabled}: Props){
                     <input
                         type="checkbox"
                         id="terms"
-                        checked={enabled}
-                        onChange={(e)=>handleChange(e.target.checked)}
+                        checked={fromNameEnabled}
+                        onChange={(e)=>onChange(e.target.checked)}
                         className="peer absolute inset-0 h-4 w-4 rounded bg-[#1C1C1E] border border-white/[0.06] appearance-none checked:bg-blue-600 checked:border-blue-600 cursor-pointer m-0"
                     />
                     <svg

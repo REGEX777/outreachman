@@ -20,13 +20,31 @@ type Props = {
 
 
 export default function Settings({intialConfig}: Props){
+    const { fromNameEnabled } = intialConfig;
 
     const [activeTab, setActiveTab] = useState("email") // change back to settings
+    const [enabled, setEnabled] = useState(fromNameEnabled ? fromNameEnabled : false)
+
+
+    async function handleChange(checked: boolean){
+        setEnabled(checked)
+        try {
+            const res = await fetch('/api/config/', {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ fromNameEnabled: checked })
+            });
+            const data = await res.json();
+            if (!data.success) throw new Error(data.error);
+        } catch (err) {
+            console.error(err);
+            setEnabled(!checked); // rolback is shit is wrong
+        }
+    }
 
     const isOpen = useSettingsStore((state)=> state.isOpen);
     const close = useSettingsStore((state)=> state.close)
 
-    const { fromNameEnabled } = intialConfig;
 
     if(!isOpen){
         return null
@@ -79,7 +97,7 @@ export default function Settings({intialConfig}: Props){
                     {/* Content */}
                     <div className="flex-1 h-full overflow-y-auto px-6 py-5">
                         {activeTab === "api" && <ApiConfig />}
-                        {activeTab === "email" && <EmailConfig fromNameEnabled={fromNameEnabled} />}
+                        {activeTab === "email" && <EmailConfig fromNameEnabled={enabled} onChange={handleChange} />}
                     </div>
                 </div>
             </div>
