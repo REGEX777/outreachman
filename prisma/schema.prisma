@@ -110,5 +110,5 @@ model UploadRow {
 
 model Config {
   id String @id @default("global")
-  fromNameEnabled Boolean? @default(false)
+  fromNameEnabled Boolean @default(false)
 }

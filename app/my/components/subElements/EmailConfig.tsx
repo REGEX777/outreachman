@@ -1,14 +1,20 @@
-import { prisma } from "@/lib/prisma"
+import { useState } from "react"
 
-export default async function EmailConfig(){
+type Props = {
+    fromNameEnabled: boolean
+}
 
-    const config = await prisma.config.upsert({
-        where: {id: "global"},
-        update: {},
-        create: {id: "global", fromNameEnabled: false}
-    })
+export default function EmailConfig({fromNameEnabled}: Props){
 
-    console.log(config)
+    const [enabled, setEnabled] = useState(fromNameEnabled ? fromNameEnabled : false)
+
+    async function handleChange(checked: boolean){
+        setEnabled(checked)
+        fetch('/api/config/', {
+            method: "PATCH",
+            body: JSON.stringify({fromNameEnabled: checked})
+        })
+    }
 
     return(
         <div className="flex flex-col items-start justify-center gap-4">
@@ -26,6 +32,8 @@ export default async function EmailConfig(){
                     <input
                         type="checkbox"
                         id="terms"
+                        checked={enabled}
+                        onChange={(e)=>handleChange(e.target.checked)}
                         className="peer absolute inset-0 h-4 w-4 rounded bg-[#1C1C1E] border border-white/[0.06] appearance-none checked:bg-blue-600 checked:border-blue-600 cursor-pointer m-0"
                     />
                     <svg

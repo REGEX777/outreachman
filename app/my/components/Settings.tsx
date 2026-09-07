@@ -7,20 +7,26 @@ import { ArrowRight02Icon, Settings02Icon, MailAtSign02Icon, Database02Icon, Use
 import { useSettingsStore } from '@/store/settingsStore';
 import ApiConfig from './subElements/ApiConfig';
 import EmailConfig from './subElements/EmailConfig';
+import { Config } from '@prisma/client';
 
 const tabs = [
     { id: "api", label: "API Configuration", icon: Settings02Icon },
     { id: "email", label: "Email Settings", icon: MailAtSign02Icon }
 ]
 
+type Props = {
+    intialConfig: Config
+}
 
-export default function Settings(){
+
+export default function Settings({intialConfig}: Props){
 
     const [activeTab, setActiveTab] = useState("email") // change back to settings
 
     const isOpen = useSettingsStore((state)=> state.isOpen);
     const close = useSettingsStore((state)=> state.close)
 
+    const { fromNameEnabled } = intialConfig;
 
     if(!isOpen){
         return null
@@ -73,7 +79,7 @@ export default function Settings(){
                     {/* Content */}
                     <div className="flex-1 h-full overflow-y-auto px-6 py-5">
                         {activeTab === "api" && <ApiConfig />}
-                        {activeTab === "email" && <EmailConfig />}
+                        {activeTab === "email" && <EmailConfig fromNameEnabled={fromNameEnabled} />}
                     </div>
                 </div>
             </div>
